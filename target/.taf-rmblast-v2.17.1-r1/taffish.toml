@@ -1,0 +1,48 @@
+[package]
+name = "rmblast"
+kind = "tool"
+version = "2.17.1"
+release = 1
+license = "OSL-2.1"
+main = "src/main.taf"
+
+[meta]
+domain = "bio"
+categories = ["sequence-search", "repeat-annotation", "genomics", "repeatmasker", "repeatmodeler"]
+keywords = ["RMBlast", "rmblastn", "RepeatMasker", "RepeatModeler", "BLAST+", "blastn", "makeblastdb", "masklevel", "complexity-adjusted scoring"]
+description = "RepeatMasker-compatible BLAST+ distribution with rmblastn and RepeatMasker/RepeatModeler-specific nucleotide search options."
+
+[repository]
+url = "https://github.com/taffish/rmblast"
+
+[command]
+name = "taf-rmblast"
+
+[runtime]
+pipe = true
+command_mode = true
+
+[container]
+image = "ghcr.io/taffish/rmblast:2.17.1-r1"
+dockerfile = "docker/Dockerfile"
+build_platforms = "linux/amd64"
+
+[upstream]
+name = "RMBlast"
+type = "official"
+url = "https://www.repeatmasker.org/rmblast/"
+homepage = "https://www.repeatmasker.org/rmblast/"
+release_url = "https://www.repeatmasker.org/rmblast/"
+downloads = "https://www.repeatmasker.org/rmblast/rmblast-2.17.1+-x64-linux.tar.gz; https://www.repeatmasker.org/rmblast/isb-2.17.1+-rmblast.patch.gz; https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.17.0/ncbi-blast-2.17.0+-src.tar.gz"
+version = "2.17.1"
+license = "OSL-2.1 with bundled NCBI public-domain BLAST+ components"
+citation = "Camacho et al. 2009 for BLAST+; RMBlast authors: Smit, Hubley, Rosen"
+doi = "10.1186/1471-2105-10-421"
+pmid = "20003500"
+watch = "official-page"
+
+[smoke]
+backend = "docker"
+timeout = 180
+exist = ["rmblastn", "blastn", "blastp", "blastx", "tblastn", "tblastx", "makeblastdb", "blastdbcmd", "blast_formatter", "dustmasker", "segmasker", "windowmasker", "psiblast", "rpsblast", "rpstblastn", "deltablast", "makeprofiledb", "makembindex", "convert2blastmask", "blastdb_aliastool", "blastdbcheck", "legacy_blast.pl", "update_blastdb.pl", "get_species_taxids.sh", "perl", "curl", "ldd"]
+test = ["rmblastn -version 2>&1 | grep -F 'rmblastn: 2.17.1+' >/dev/null && blastn -version 2>&1 | grep -F 'blastn: 2.17.1+' >/dev/null && test \"${BLAST_USAGE_REPORT}\" = 'false'", "rmblastn -help 2>&1 | grep -F 'Nucleotide-Nucleotide BLAST with RepeatMasker Extensions 2.17.1+' >/dev/null && rmblastn -help 2>&1 | grep -F -- '-complexity_adjust' >/dev/null && rmblastn -help 2>&1 | grep -F -- '-mask_level' >/dev/null && rmblastn -help 2>&1 | grep -F -- '-mask_level_algo' >/dev/null", "ldd \"$(command -v rmblastn)\" | grep -F 'libsqlite3' >/dev/null && ldd \"$(command -v rmblastn)\" | grep -F 'libgomp' >/dev/null && ! ldd \"$(command -v rmblastn)\" | grep -F 'not found' >/dev/null && perl -v >/dev/null && curl --version >/dev/null", "makeblastdb -help 2>&1 | grep -F 'USAGE' >/dev/null && blastdbcmd -help 2>&1 | grep -F 'USAGE' >/dev/null && blast_formatter -help 2>&1 | grep -F 'USAGE' >/dev/null && dustmasker -help 2>&1 | grep -F 'USAGE' >/dev/null && segmasker -help 2>&1 | grep -F 'USAGE' >/dev/null", "mkdir -p /tmp/taf-rmblast-rmblastn && cd /tmp/taf-rmblast-rmblastn && printf '>s\\nACGTTGCATGTCAGTACGATCGTACGATGCTAGCTAGGATCCGATCGTACGTTGCATGTCAGTACGATCGTACGATGCTAGCTAGGATCCGATCGT\\n' > db.fa && makeblastdb -in db.fa -dbtype nucl -out db >/dev/null && printf '>q\\nACGTTGCATGTCAGTACGATCGTACGATGCTAGCTAGGATCCGATCGT\\n' > q.fa && rmblastn -query q.fa -db db -task megablast -dust no -outfmt '6 qseqid sseqid pident length' | awk '$1==\"q\" && $2==\"s\" && $3==\"100.000\" && $4>=48 {found=1} END {exit !found}'", "mkdir -p /tmp/taf-rmblast-blastn && cd /tmp/taf-rmblast-blastn && printf '>s\\nACGTTGCATGTCAGTACGATCGTACGATGCTAGCTAGGATCCGATCGTACGTTGCATGTCAGTACGATCGTACGATGCTAGCTAGGATCCGATCGT\\n' > db.fa && makeblastdb -in db.fa -dbtype nucl -out db >/dev/null && printf '>q\\nACGTTGCATGTCAGTACGATCGTACGATGCTAGCTAGGATCCGATCGT\\n' > q.fa && blastn -query q.fa -db db -task megablast -dust no -outfmt '6 qseqid sseqid pident length' | awk '$1==\"q\" && $2==\"s\" && $3==\"100.000\" && $4>=48 {found=1} END {exit !found}'", "legacy_blast.pl --help 2>&1 | grep -F 'legacy_blast.pl' >/dev/null && update_blastdb.pl --help 2>&1 | grep -F 'update_blastdb.pl' >/dev/null && command -v get_species_taxids.sh >/dev/null"]
