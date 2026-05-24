@@ -9,9 +9,9 @@ toolkit.
 
 - name: `rmblast`
 - command: `taf-rmblast`
-- version: `2.17.1-r1`
+- version: `2.17.1-r2`
 - kind: `tool`
-- image: `ghcr.io/taffish/rmblast:2.17.1-r1`
+- image: `ghcr.io/taffish/rmblast:2.17.1-r2`
 - upstream: RMBlast `2.17.1`, based on NCBI BLAST+ `2.17.0`
 - runtime version: `rmblastn: 2.17.1+`
 - native platform: `linux/amd64`
@@ -126,6 +126,10 @@ with the upstream binary package. Online BLAST database downloads, Entrez
 Direct setup, and remote searches are not part of the smoke-tested offline
 surface. Users who need those workflows may need network access and additional
 NCBI tooling.
+
+## License Boundary
+
+The TAFFISH app packaging files are licensed under Apache-2.0. The packaged upstream RMBlast software is covered by: OSL-2.1 with bundled NCBI public-domain BLAST+ components. Bundled third-party components, datasets, models, and external resources keep their own license terms.
 
 ## License And Citation
 

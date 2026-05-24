@@ -2,8 +2,8 @@
 name = "rmblast"
 kind = "tool"
 version = "2.17.1"
-release = 1
-license = "OSL-2.1"
+release = 2
+license = "Apache-2.0"
 main = "src/main.taf"
 
 [meta]
@@ -23,7 +23,7 @@ pipe = true
 command_mode = true
 
 [container]
-image = "ghcr.io/taffish/rmblast:2.17.1-r1"
+image = "ghcr.io/taffish/rmblast:2.17.1-r2"
 dockerfile = "docker/Dockerfile"
 build_platforms = "linux/amd64"
 

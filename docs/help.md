@@ -1,4 +1,4 @@
-taf-rmblast 2.17.1-r1
+taf-rmblast 2.17.1-r2
 
 RMBlast is a RepeatMasker-compatible BLAST+ distribution. This app defaults to
 rmblastn and also exposes the companion BLAST+ commands bundled in the official
@@ -68,6 +68,12 @@ Platform:
   This app uses the official RMBlast x64 Linux binary and is native
   linux/amd64 only. Docker and Podman runs request --platform linux/amd64.
   On arm64 hosts this means amd64 emulation, not native arm64 execution.
+
+License:
+  TAFFISH app packaging: Apache-2.0.
+  Upstream software: OSL-2.1 with bundled NCBI public-domain BLAST+ components.
+  Bundled components, data, models, and external resources keep their
+  own license terms.
 
 Boundaries:
   This app provides the RMBlast command suite, not RepeatMasker itself and not
